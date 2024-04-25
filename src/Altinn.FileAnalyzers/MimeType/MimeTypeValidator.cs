@@ -42,8 +42,6 @@ public class MimeTypeValidator : IFileValidator
                 };
 
                 errors.Add(error);
-
-                return (false, errors);
             }
         }
 
@@ -59,10 +57,8 @@ public class MimeTypeValidator : IFileValidator
             };
 
             errors.Add(error);
-
-            return (false, errors);
         }
 
-        return (true, errors);
+        return errors.Any() ? (false, errors) : (true, errors);
     }
 }
