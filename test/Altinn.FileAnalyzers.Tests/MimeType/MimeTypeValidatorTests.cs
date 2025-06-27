@@ -2,7 +2,6 @@ using Altinn.App.Core.Features.FileAnalysis;
 using Altinn.App.Core.Models.Validation;
 using Altinn.FileAnalyzers.MimeType;
 using Altinn.Platform.Storage.Interface.Models;
-using FluentAssertions;
 
 namespace Altinn.FileAnalyzers.Tests.MimeType;
 
@@ -34,8 +33,8 @@ public class MimeTypeValidatorTests
             fileAnalysisResults
         );
 
-        success.Should().BeTrue();
-        errors.Should().BeEmpty();
+        Assert.True(success);
+        Assert.Empty(errors);
     }
 
     [Fact]
@@ -64,10 +63,10 @@ public class MimeTypeValidatorTests
             fileAnalysisResults
         );
 
-        success.Should().BeFalse();
-        errors
-            .FirstOrDefault()
-            ?.Code.Should()
-            .Be(ValidationIssueCodes.DataElementCodes.ContentTypeNotAllowed);
+        Assert.False(success);
+        Assert.Equal(
+            ValidationIssueCodes.DataElementCodes.ContentTypeNotAllowed,
+            errors.FirstOrDefault()?.Code
+        );
     }
 }

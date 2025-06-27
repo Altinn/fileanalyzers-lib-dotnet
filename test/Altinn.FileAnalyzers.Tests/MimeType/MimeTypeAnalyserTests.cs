@@ -1,6 +1,5 @@
 ﻿using Altinn.App.Core.Features.FileAnalysis;
 using Altinn.FileAnalyzers.MimeType;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using MimeDetective;
@@ -39,7 +38,7 @@ namespace Altinn.FileAnalyzers.Tests.MimeType
 
             FileAnalysisResult analysisResult = await mimeTypeAnalyser.Analyse(stream);
 
-            analysisResult.MimeType.Should().Be("application/pdf");
+            Assert.Equal("application/pdf", analysisResult.MimeType);
         }
 
         [Fact]
@@ -56,7 +55,7 @@ namespace Altinn.FileAnalyzers.Tests.MimeType
 
             FileAnalysisResult analysisResult = await mimeTypeAnalyser.Analyse(stream);
 
-            analysisResult.MimeType.Should().Be("image/jpeg");
+            Assert.Equal("image/jpeg", analysisResult.MimeType);
         }
     }
 }
