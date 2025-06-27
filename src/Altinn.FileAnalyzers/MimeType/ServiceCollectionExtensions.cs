@@ -28,10 +28,9 @@ namespace Altinn.FileAnalyzers.MimeType
                     Include_Matches_Failed = false,
                     Include_Matches_Partial = true,
                     Include_Segments_Prefix = true,
-                    Include_Segments_Strings = true
-                }
-            }
-            .Build();
+                    Include_Segments_Strings = true,
+                },
+            }.Build();
 
             services.AddSingleton(inspector);
         }
