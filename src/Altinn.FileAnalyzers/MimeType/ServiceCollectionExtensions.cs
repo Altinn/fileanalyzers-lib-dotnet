@@ -11,12 +11,15 @@ namespace Altinn.FileAnalyzers.MimeType
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Extension method to add support for MimeType analysis and validation
+        /// Adds support for MimeType analysis and validation by registering
+        /// * IFileAnalyser implementation
+        /// * IFileValidator implementation
+        /// based on the MimeDetective library.
         /// </summary>
-        public static void AddMimeTypeValidation(this IServiceCollection services)
+        public static IServiceCollection AddMimeTypeValidation(this IServiceCollection services)
         {
-            services.AddTransient<IFileAnalyser, MimeTypeAnalyser>();
-            services.AddTransient<IFileValidator, MimeTypeValidator>();
+            services.AddSingleton<IFileAnalyser, MimeTypeAnalyser>();
+            services.AddSingleton<IFileValidator, MimeTypeValidator>();
 
             // Based on the documentation here: https://github.com/MediatedCommunications/Mime-Detective#2--slow-initialization--fast-execution
             var inspector = new ContentInspectorBuilder()
@@ -33,6 +36,7 @@ namespace Altinn.FileAnalyzers.MimeType
             }.Build();
 
             services.AddSingleton(inspector);
+            return services;
         }
     }
 }

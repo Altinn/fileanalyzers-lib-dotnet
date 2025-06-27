@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
 		<!-- This defines the minimum required version of Altinn.App.Core and should not be bumped unless new features require it.-->
 		<PackageReference Include="Altinn.App.Core" VersionOverride="8.0.0" />
 
