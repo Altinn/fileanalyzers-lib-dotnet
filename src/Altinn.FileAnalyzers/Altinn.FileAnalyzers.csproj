@@ -8,7 +8,7 @@
     <Description>
       This class library holds extra file analyzers for Altinn Studio apps.
     </Description>
-    <!-- Earlier versions of Altinn.App.Core v8 has transitive deps with security NuGet audit warnings -->
+    <!-- We don't care about transitive NuGet audit warnings for Altinn.App.Core minimum version -->
     <NuGetAuditMode>direct</NuGetAuditMode>
   </PropertyGroup>
 

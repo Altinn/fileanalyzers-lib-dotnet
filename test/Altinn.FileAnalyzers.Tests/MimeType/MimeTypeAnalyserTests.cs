@@ -17,11 +17,7 @@ namespace Altinn.FileAnalyzers.Tests.MimeType
             services.AddMimeTypeValidation();
             var serviceProvider = services.BuildServiceProvider();
             _contentInspector = serviceProvider.GetService<ContentInspector>();
-
-            if (_contentInspector == null)
-            {
-                throw new System.Exception("Could not get ContentInspector from service provider");
-            }
+            Assert.NotNull(_contentInspector);
         }
 
         [Fact]

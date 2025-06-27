@@ -351,6 +351,9 @@ dotnet_diagnostic.SA1649.severity = error
 
 dotnet_diagnostic.SA1651.severity = error
 
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
+
 [*.{cs,vb}]
 #### Naming styles ####
 
