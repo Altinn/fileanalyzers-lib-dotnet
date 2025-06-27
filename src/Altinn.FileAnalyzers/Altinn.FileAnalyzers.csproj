@@ -4,6 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageTags>Altinn;Studio;App;Core</PackageTags>
+    <Description>
+      This class library holds extra file analyzers for Altinn Studio apps.
+    </Description>
   </PropertyGroup>
 
   <ItemGroup>
