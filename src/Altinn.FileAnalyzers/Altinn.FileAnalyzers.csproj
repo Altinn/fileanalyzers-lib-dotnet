@@ -17,10 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-		<!-- This defines the minimum required version of Altinn.App.Core and should not be bumped unless new features require it. -->
-		<PackageReference Include="Altinn.App.Core" VersionOverride="8.0.0" />
+    <!-- This defines the minimum required version of Altinn.App.Core and should not be bumped unless new features require it. -->
+    <PackageReference Include="Altinn.App.Core" VersionOverride="8.0.0" />
 
-		<PackageReference Include="Mime-Detective" />
+    <PackageReference Include="Mime-Detective" />
   </ItemGroup>
 
 </Project>
