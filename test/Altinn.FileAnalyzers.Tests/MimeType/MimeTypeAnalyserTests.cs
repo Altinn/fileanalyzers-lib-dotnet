@@ -19,19 +19,23 @@ namespace Altinn.FileAnalyzers.Tests.MimeType
             var serviceProvider = services.BuildServiceProvider();
             _contentInspector = serviceProvider.GetService<ContentInspector>();
 
-            if(_contentInspector == null)
+            if (_contentInspector == null)
             {
                 throw new System.Exception("Could not get ContentInspector from service provider");
             }
-
         }
 
         [Fact]
         public async Task Analyse_ValidPdf_ShouldReturnCorrectMimeType()
         {
             var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-            var mimeTypeAnalyser = new MimeTypeAnalyser(httpContextAccessorMock.Object, _contentInspector!);
-            var stream = EmbeddedResource.LoadDataAsStream("Altinn.FileAnalyzers.Tests.MimeType.example.pdf");
+            var mimeTypeAnalyser = new MimeTypeAnalyser(
+                httpContextAccessorMock.Object,
+                _contentInspector!
+            );
+            var stream = EmbeddedResource.LoadDataAsStream(
+                "Altinn.FileAnalyzers.Tests.MimeType.example.pdf"
+            );
 
             FileAnalysisResult analysisResult = await mimeTypeAnalyser.Analyse(stream);
 
@@ -42,11 +46,16 @@ namespace Altinn.FileAnalyzers.Tests.MimeType
         public async Task Analyse_InvalidPdf_ShouldReturnCorrectMimeType()
         {
             var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-            var mimeTypeAnalyser = new MimeTypeAnalyser(httpContextAccessorMock.Object, _contentInspector!);
-            var stream = EmbeddedResource.LoadDataAsStream("Altinn.FileAnalyzers.Tests.MimeType.example.jpg.pdf");
-            
+            var mimeTypeAnalyser = new MimeTypeAnalyser(
+                httpContextAccessorMock.Object,
+                _contentInspector!
+            );
+            var stream = EmbeddedResource.LoadDataAsStream(
+                "Altinn.FileAnalyzers.Tests.MimeType.example.jpg.pdf"
+            );
+
             FileAnalysisResult analysisResult = await mimeTypeAnalyser.Analyse(stream);
-            
+
             analysisResult.MimeType.Should().Be("image/jpeg");
         }
     }

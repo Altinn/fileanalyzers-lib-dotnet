@@ -10,11 +10,11 @@ public class MimeTypeValidatorTests
 {
     [Fact]
     public async Task Validate_MimeTypeCorrect_ShouldValidateOk()
-    {   // Simulate config in applicationMetadata.json
+    { // Simulate config in applicationMetadata.json
         var dataType = new DataType()
         {
             EnabledFileValidators = new List<string>() { "mimeTypeValidator" },
-            AllowedContentTypes = new List<string>() { "application/pdf" }
+            AllowedContentTypes = new List<string>() { "application/pdf" },
         };
 
         // Simulate file analysis result
@@ -24,12 +24,15 @@ public class MimeTypeValidatorTests
             {
                 MimeType = "application/pdf",
                 Filename = "test.pdf",
-                Extensions = new List<string>() { "pdf" }
-            }
+                Extensions = new List<string>() { "pdf" },
+            },
         };
 
         var validator = new MimeTypeValidator();
-        (bool success, IEnumerable<ValidationIssue> errors) = await validator.Validate(dataType, fileAnalysisResults);
+        (bool success, IEnumerable<ValidationIssue> errors) = await validator.Validate(
+            dataType,
+            fileAnalysisResults
+        );
 
         success.Should().BeTrue();
         errors.Should().BeEmpty();
@@ -37,11 +40,11 @@ public class MimeTypeValidatorTests
 
     [Fact]
     public async Task Validate_MimeTypeCorrect_ShouldReturnWithError()
-    {   // Simulate config in applicationMetadata.json
+    { // Simulate config in applicationMetadata.json
         var dataType = new DataType()
         {
             EnabledFileValidators = new List<string>() { "mimeTypeValidator" },
-            AllowedContentTypes = new List<string>() { "application/pdf" }
+            AllowedContentTypes = new List<string>() { "application/pdf" },
         };
 
         // Simulate file analysis result
@@ -51,14 +54,20 @@ public class MimeTypeValidatorTests
             {
                 MimeType = "application/pdfx",
                 Filename = "test.png",
-                Extensions = new List<string>() { "png" }
-            }
+                Extensions = new List<string>() { "png" },
+            },
         };
 
         var validator = new MimeTypeValidator();
-        (bool success, IEnumerable<ValidationIssue> errors) = await validator.Validate(dataType, fileAnalysisResults);
+        (bool success, IEnumerable<ValidationIssue> errors) = await validator.Validate(
+            dataType,
+            fileAnalysisResults
+        );
 
         success.Should().BeFalse();
-        errors.FirstOrDefault()?.Code.Should().Be(ValidationIssueCodes.DataElementCodes.ContentTypeNotAllowed);
+        errors
+            .FirstOrDefault()
+            ?.Code.Should()
+            .Be(ValidationIssueCodes.DataElementCodes.ContentTypeNotAllowed);
     }
 }
