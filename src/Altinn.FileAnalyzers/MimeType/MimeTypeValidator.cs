@@ -18,7 +18,7 @@ internal sealed class MimeTypeValidator : IFileValidator
     {
         List<ValidationIssue> errors = new();
 
-        var fileMimeTypeResult = fileAnalysisResults.FirstOrDefault(x => x.MimeType != null);
+        var fileMimeTypeResult = fileAnalysisResults.FirstOrDefault(x => x.MimeType is not null);
 
         // Verify that file mime type is an allowed content-type
         if (

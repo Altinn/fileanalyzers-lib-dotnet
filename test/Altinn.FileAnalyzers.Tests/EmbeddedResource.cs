@@ -19,7 +19,7 @@ public static class EmbeddedResource
         var assembly = Assembly.GetExecutingAssembly();
         Stream? resourceStream = assembly.GetManifestResourceStream(resourceName);
 
-        if (resourceStream == null)
+        if (resourceStream is null)
         {
             throw new InvalidOperationException(
                 $"Unable to find resource {resourceName} embedded in assembly {assembly.FullName}."

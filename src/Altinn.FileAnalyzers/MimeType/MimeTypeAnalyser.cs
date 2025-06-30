@@ -31,7 +31,7 @@ internal sealed class MimeTypeAnalyser(
             .FirstOrDefault(match => match.Percentage == 1);
 
         var fileAnalysisResult = new FileAnalysisResult(Id);
-        if (match != null)
+        if (match is not null)
         {
             fileAnalysisResult.Extensions = match.Definition.File.Extensions.ToList();
             fileAnalysisResult.MimeType = match.Definition.File.MimeType;
