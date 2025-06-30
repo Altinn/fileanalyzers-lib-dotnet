@@ -9,15 +9,14 @@ namespace Altinn.FileAnalyzers.Tests.MimeType;
 
 public class MimeTypeAnalyserTests
 {
-    private readonly ContentInspector? _contentInspector;
+    private readonly ContentInspector _contentInspector;
 
     public MimeTypeAnalyserTests()
     {
         IServiceCollection services = new ServiceCollection();
         services.AddMimeTypeValidation();
         var serviceProvider = services.BuildServiceProvider();
-        _contentInspector = serviceProvider.GetService<ContentInspector>();
-        Assert.NotNull(_contentInspector);
+        _contentInspector = serviceProvider.GetRequiredService<ContentInspector>();
     }
 
     [Fact]
@@ -26,7 +25,7 @@ public class MimeTypeAnalyserTests
         var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
         var mimeTypeAnalyser = new MimeTypeAnalyser(
             httpContextAccessorMock.Object,
-            _contentInspector!
+            _contentInspector
         );
         var stream = EmbeddedResource.LoadDataAsStream(
             "Altinn.FileAnalyzers.Tests.MimeType.example.pdf"
@@ -43,7 +42,7 @@ public class MimeTypeAnalyserTests
         var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
         var mimeTypeAnalyser = new MimeTypeAnalyser(
             httpContextAccessorMock.Object,
-            _contentInspector!
+            _contentInspector
         );
         var stream = EmbeddedResource.LoadDataAsStream(
             "Altinn.FileAnalyzers.Tests.MimeType.example.jpg.pdf"
