@@ -6,7 +6,7 @@ using Altinn.Platform.Storage.Interface.Models;
 namespace Altinn.FileAnalyzers.MimeType;
 
 /// <summary>
-/// Validates that the file is of the allowed content type
+/// Validates that the file is of the allowed content and uploaded file extension is the same as filename extension.
 /// </summary>
 public class MimeTypeValidator : IFileValidator
 {
@@ -16,7 +16,7 @@ public class MimeTypeValidator : IFileValidator
     public string Id { get; private set; } = "mimeTypeValidator";
 
     /// <summary>
-    /// Validates that the file is of the allowed content type.
+    /// Validates that the file is of the allowed content type and uploaded file extension is the same as filename extension.
     /// </summary>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously. Suppressed because of the interface.
     public async Task<(bool Success, IEnumerable<ValidationIssue> Errors)> Validate(DataType dataType, IEnumerable<FileAnalysisResult> fileAnalysisResults)
@@ -25,6 +25,25 @@ public class MimeTypeValidator : IFileValidator
         List<ValidationIssue> errors = new();
 
         var fileMimeTypeResult = fileAnalysisResults.FirstOrDefault(x => x.MimeType != null);
+        if (fileMimeTypeResult == null) return (true, errors);
+
+        // Verify that uploaded file extension is the same as filename extension
+
+        foreach (var fileExtension in fileMimeTypeResult.Extensions)
+        {
+            if (fileMimeTypeResult.Filename != null && !fileMimeTypeResult.Filename.EndsWith(fileExtension))
+            {
+                ValidationIssue error = new()
+                {
+                    Source = "File",
+                    Code = "Uploaded file extension is not the same as filename extension", // TODO - Add correct code
+                    Severity = ValidationIssueSeverity.Error,
+                    Description = $"The {fileMimeTypeResult.Filename} filename does not appear to have the same extension as uploaded file. File extension on uploaded file is .{fileExtension}"
+                };
+
+                errors.Add(error);
+            }
+        }
 
         // Verify that file mime type is an allowed content-type
         if (!dataType.AllowedContentTypes.Contains(fileMimeTypeResult?.MimeType, StringComparer.InvariantCultureIgnoreCase) && !dataType.AllowedContentTypes.Contains("application/octet-stream"))
@@ -38,10 +57,8 @@ public class MimeTypeValidator : IFileValidator
             };
 
             errors.Add(error);
-
-            return (false, errors);
         }
 
-        return (true, errors);
+        return errors.Any() ? (false, errors) : (true, errors);
     }
 }
