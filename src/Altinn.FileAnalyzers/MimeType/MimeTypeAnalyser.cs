@@ -6,21 +6,18 @@ using MimeDetective;
 namespace Altinn.FileAnalyzers.MimeType;
 
 internal sealed class MimeTypeAnalyser(
-    IHttpContextAccessor httpContextAccessor,
-    ContentInspector inspector
+    IHttpContextAccessor _httpContextAccessor,
+    ContentInspector _inspector
 ) : IFileAnalyser
 {
-    // Allow synchronous IO access for the usage of MimeDetective
-    // which does not have async methods. This on a per request basis.
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-    private readonly ContentInspector _inspector = inspector;
-
     /// <inheritDoc/>
     public string Id { get; private set; } = "mimeTypeAnalyser";
 
     /// <inheritDoc/>
     public Task<FileAnalysisResult> Analyse(Stream stream, string? filename = null)
     {
+        // Allow synchronous IO access for the usage of MimeDetective
+        // which does not have async methods. This on a per request basis.
         var syncIOFeature =
             _httpContextAccessor.HttpContext?.Features.Get<IHttpBodyControlFeature>();
         if (syncIOFeature is not null)
