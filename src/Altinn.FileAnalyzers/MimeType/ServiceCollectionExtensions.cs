@@ -18,24 +18,37 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddMimeTypeValidation(this IServiceCollection services)
     {
+        var inspector = new ContentInspectorBuilder()
+        {
+            Definitions = MimeDetective.Definitions.DefaultDefinitions.All(),
+            MatchEvaluatorOptions = new MimeDetective.Engine.DefinitionMatchEvaluatorOptions()
+            {
+                IncludeMatchesComplete = true,
+                IncludeMatchesFailed = false,
+                IncludeMatchesPartial = true,
+                IncludeSegmentsPrefix = true,
+                IncludeSegmentsStrings = true,
+            },
+        }.Build();
+        services.AddMimeTypeValidation(inspector);
+        return services;
+    }
+
+    /// <summary>
+    /// Adds support for MimeType analysis and validation by registering
+    /// * IFileAnalyser implementation
+    /// * IFileValidator implementation
+    /// based on the MimeDetective library.
+    /// </summary>
+    public static IServiceCollection AddMimeTypeValidation(
+        this IServiceCollection services,
+        IContentInspector inspector
+    )
+    {
         services.AddSingleton<IFileAnalyser, MimeTypeAnalyser>();
         services.AddSingleton<IFileValidator, MimeTypeValidator>();
 
-        // Based on the documentation here: https://github.com/MediatedCommunications/Mime-Detective#2--slow-initialization--fast-execution
-        var inspector = new ContentInspectorBuilder()
-        {
-            Definitions = MimeDetective.Definitions.Default.All(),
-            MatchEvaluatorOptions = new MimeDetective.Engine.DefinitionMatchEvaluatorOptions()
-            {
-                Include_Matches_Complete = true,
-                Include_Matches_Failed = false,
-                Include_Matches_Partial = true,
-                Include_Segments_Prefix = true,
-                Include_Segments_Strings = true,
-            },
-        }.Build();
-
-        services.AddSingleton(inspector);
+        services.AddSingleton<IContentInspector>(inspector);
         return services;
     }
 }

@@ -9,14 +9,14 @@ namespace Altinn.FileAnalyzers.Tests.MimeType;
 
 public class MimeTypeAnalyserTests
 {
-    private readonly ContentInspector _contentInspector;
+    private readonly IContentInspector _contentInspector;
 
     public MimeTypeAnalyserTests()
     {
         IServiceCollection services = new ServiceCollection();
         services.AddMimeTypeValidation();
         var serviceProvider = services.BuildServiceProvider();
-        _contentInspector = serviceProvider.GetRequiredService<ContentInspector>();
+        _contentInspector = serviceProvider.GetRequiredService<IContentInspector>();
     }
 
     [Fact]

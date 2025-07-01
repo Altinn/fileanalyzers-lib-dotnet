@@ -6,5 +6,6 @@ namespace Altinn.FileAnalyzers.MimeType
     public static class ServiceCollectionExtensions
     {
         public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddMimeTypeValidation(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) { }
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddMimeTypeValidation(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, MimeDetective.IContentInspector inspector) { }
     }
 }
